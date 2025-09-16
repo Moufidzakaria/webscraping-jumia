@@ -2,10 +2,10 @@ import { PlaywrightCrawler } from 'crawlee';
 import fs from 'fs';
 
 async function start() {
-    let allProducts: any[] = []; // نخزن جميع المنتجات هنا
+    let allProducts: { title: string; price: string }[] = [];
 
     const crawler = new PlaywrightCrawler({
-                headless: true, // ✅ indispensable pour CI/GitHub Actions
+        headless: true,
 
         async requestHandler({ page, request }) {
             console.log(`Crawling URL: ${request.url}`);
@@ -25,8 +25,9 @@ async function start() {
                 console.log(`Nombre de produits trouvés: ${products.length}`);
 
                 for (const product of products) {
-                    const title = await product.$eval('h3', el => el.textContent.trim());
-                    const price = await product.$eval('.prc', el => el.textContent.trim());
+                    // Récupération sécurisée du titre
+                    const title = await product.$eval('h3', el => el.textContent?.trim() ?? 'Titre manquant');
+                    const price = await product.$eval('.prc', el => el.textContent?.trim() ?? 'Prix manquant');
 
                     const item = { title, price };
                     allProducts.push(item);
@@ -34,30 +35,27 @@ async function start() {
                 }
             }
 
-            // ✅ Scraper toutes les pages avec une boucle
+            // Scraper toutes les pages
             let hasNextPage = true;
             while (hasNextPage) {
                 await scrapeProducts();
 
-                // Vérifier si le bouton "page suivante" existe
                 const nextPageButton = await page.$('a.pg[aria-label="Page suivante"]');
-
                 if (nextPageButton) {
                     console.log('➡️ Aller à la page suivante...');
                     await nextPageButton.click();
-                    await page.waitForTimeout(3000); // attendre chargement
+                    await page.waitForTimeout(3000);
                 } else {
                     console.log('🚫 Pas de page suivante.');
                     hasNextPage = false;
                 }
             }
         },
-       
     });
 
     await crawler.run(['https://www.jumia.ma/']);
 
-    // Sauvegarde des résultats dans JSON
+    // Sauvegarde des résultats
     fs.writeFileSync('products.json', JSON.stringify(allProducts, null, 2), 'utf-8');
     console.log('✅ Les produits ont été sauvegardés dans products.json');
 }

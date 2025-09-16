@@ -1,35 +1,41 @@
-name: Run Playwright Crawlee
+name: Run Playwright Crawlee (TypeScript)
 
 on:
   push:
     branches:
       - main
-  workflow_dispatch:  # permet de lancer manuellement le workflow
+  workflow_dispatch:
 
 jobs:
   crawl:
     runs-on: ubuntu-latest
 
     steps:
+      # 1️⃣ Cloner le repo
       - name: Checkout repository
         uses: actions/checkout@v3
 
+      # 2️⃣ Installer Node.js
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '20'
 
+      # 3️⃣ Installer les dépendances et Playwright
       - name: Install dependencies
         run: |
           npm ci
           npx playwright install --with-deps
+          npm install -g ts-node typescript
 
+      # 4️⃣ Lancer le crawler TypeScript
       - name: Run crawler
         run: |
-          node index.js  # remplace par ton fichier de script
+          npx ts-node src/main.ts
 
+      # 5️⃣ Sauvegarder le fichier JSON généré
       - name: Upload results
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: products-json
           path: products.json

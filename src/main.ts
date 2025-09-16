@@ -5,6 +5,8 @@ async function start() {
     let allProducts: any[] = []; // نخزن جميع المنتجات هنا
 
     const crawler = new PlaywrightCrawler({
+                headless: true, // ✅ indispensable pour CI/GitHub Actions
+
         async requestHandler({ page, request }) {
             console.log(`Crawling URL: ${request.url}`);
 
@@ -50,7 +52,7 @@ async function start() {
                 }
             }
         },
-        headless: false,
+       
     });
 
     await crawler.run(['https://www.jumia.ma/']);

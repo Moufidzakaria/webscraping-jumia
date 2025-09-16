@@ -1,0 +1,35 @@
+name: Run Playwright Crawlee
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:  # permet de lancer manuellement le workflow
+
+jobs:
+  crawl:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: |
+          npm ci
+          npx playwright install --with-deps
+
+      - name: Run crawler
+        run: |
+          node index.js  # remplace par ton fichier de script
+
+      - name: Upload results
+        uses: actions/upload-artifact@v3
+        with:
+          name: products-json
+          path: products.json

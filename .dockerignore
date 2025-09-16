@@ -1,0 +1,23 @@
+# IDE
+.idea
+.vscode
+
+# Node
+node_modules
+npm-debug.log
+yarn-error.log
+
+# Crawlee
+storage
+
+# Git
+.git
+.gitignore
+
+# Docker
+Dockerfile
+docker-compose.yml
+
+# OS
+.DS_Store
+Thumbs.db

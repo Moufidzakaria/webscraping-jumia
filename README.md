@@ -1,9 +1,26 @@
-# Getting started with Crawlee
+# 🛒 Scraper Jumia – iPhone 13
 
-This example uses `PlaywrightCrawler` to recursively crawl https://crawlee.dev using the browser automation library [Playwright](https://playwright.dev).
+## 📌 Description
 
-You can find more examples and documentation at the following links:
+Ce projet utilise **Crawlee** et **Playwright** pour extraire les informations des produits "iPhone 13" depuis le site **Jumia.ma**. Les données collectées incluent :
 
-- [Step-by-step tutorial](https://crawlee.dev/js/docs/introduction) for Crawlee
-- `PlaywrightCrawler` [API documentation](https://crawlee.dev/js/api/playwright-crawler/class/PlaywrightCrawler)
-- Other [examples](https://crawlee.dev/js/docs/examples/playwright-crawler)
+- **Titre** du produit
+- **Prix**
+- **Lien** vers la page du produit
+- **Image** du produit
+
+Les résultats sont enregistrés dans un fichier `products.json`.
+
+## 🚀 Prérequis
+
+- Node.js v20 ou supérieur
+- Docker (optionnel, pour exécuter le projet en conteneur)
+- GitHub Actions (optionnel, pour automatiser l'exécution)
+
+## 🛠 Installation locale
+
+1. Clone le repository :
+
+   ```bash
+   git clone https://github.com/Moufidzakaria/webscraping-jumia.git
+   cd webscraping-jumia
